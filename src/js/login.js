@@ -6,7 +6,7 @@ const setCookie = (cookie_name, value) => {
   document.cookie = cookie_name + "=" + cookie_value;
 };
 
-const login_btn = document.querySelector("#login-btn");
+const $login_btn = document.querySelector("#login-btn");
 
 const api_login = async e => {
   e.preventDefault();
@@ -39,4 +39,4 @@ const api_login = async e => {
       console.log(err);
     });
 };
-login_btn.addEventListener("click", api_login);
+$login_btn.addEventListener("click", api_login);

@@ -1,32 +1,41 @@
 //서버와의 통신 js
 
-import { data } from "./data.js";
+// import { data } from "./data.js";
 
-let url = "https://estsoft-openai-api.jejucodingcamp.workers.dev/";
+let url = "http://127.0.0.1:8000/main/request/";
 const $output_text = document.querySelector("#ai-answer");
 export const $loading = document.querySelector("#loading");
 
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+}
 //사용자에게 입력받은 요청을 data에 넣음
+
+const data = {};
 export const sendQuestion = (lang, method, detail) => {
-  data.push({
-    role: "user",
-    content: `프로그래밍 언어는 ${lang}이고 ${detail}이걸 ${method} 해줘`,
-  });
+  data["language"] = lang;
+  data["purpose"] = method;
+  data["detail"] = detail;
+  console.log(data);
 };
 
+const token = getCookie("my-app-auth");
 // api 통신 만약 성공시 printAnswer 함수 인자값에 받아온 결과값 전달
 export const apiPost = async () => {
   await fetch(url, {
     method: "POST",
     headers: {
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-    redirect: "follow",
   })
     .then(res => res.json())
     .then(res => {
-      printAnswer(res.choices[0].message.content);
+      console.log(res.answer);
+      printAnswer(res.answer);
     })
     .catch(err => {
       console.log(err);
