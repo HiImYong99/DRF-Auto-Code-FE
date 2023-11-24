@@ -101,6 +101,22 @@ function deleteData(index) {
   location.reload();
 }
 
+function deleteDataAll(index) {
+  if (confirm("정말 해당 기록을 삭제하시겠습니까?")) {
+    fetch(`http://127.0.0.1:8000/main/delete/all/`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {});
+  }
+  location.reload();
+}
+
 // 리스트 style 변경 모은함수
 function li_style(li, button) {
   li.className = "mb-3";
@@ -116,3 +132,5 @@ function li_style(li, button) {
     li.style.color = "black";
   });
 }
+
+$remove_btn.addEventListener("click", deleteDataAll);
