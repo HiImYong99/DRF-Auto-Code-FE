@@ -29,7 +29,7 @@ const api_login = async e => {
     .then(res => res.json())
     .then(data => {
       if (data.non_field_errors) {
-        alert(data.non_field_errors[0]);
+        alert("계정 혹은 비밀번호를 다시 확인해주세요.");
       } else {
         console.log(data);
         location.href = "/index.html";

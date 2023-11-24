@@ -45,12 +45,7 @@ export const apiPost = async () => {
 // api에게 받은 답변을 화면에 출력함
 const printAnswer = async answer => {
   let pre = document.createElement("pre");
-  let ai_arr = localStorage.getItem("ai")
-    ? JSON.parse(localStorage.getItem("ai"))
-    : [];
   pre.innerText = answer;
-  ai_arr.push(answer);
-  localStorage.setItem("ai", JSON.stringify(ai_arr));
   $loading.style.display = "none";
   const $existingPre = $output_text.querySelector("pre");
   if ($existingPre) {

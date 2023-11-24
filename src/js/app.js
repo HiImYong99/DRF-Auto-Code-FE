@@ -1,4 +1,3 @@
-import { save_Item } from "./local-storage.js";
 import { sendQuestion, apiPost, $loading } from "./api.js";
 
 const $btn = document.querySelector("#submit-btn");
@@ -19,7 +18,6 @@ $form.addEventListener("submit", e => {
   loading_appear();
   sendQuestion(lang_value, method_value, detail_value);
   apiPost();
-  save_Item(lang_value, method_value, detail_value);
 });
 
 //실행해보기 버튼 클릭 시 발생

@@ -1,28 +1,22 @@
-// 쿠키 이름으로 쿠키의 값을 가져오는 함수
 const getCookie = cookie_name => {
   const name = cookie_name + "=";
   const decodedCookie = decodeURIComponent(document.cookie);
   const cookieArray = decodedCookie.split(";");
-
   for (let i = 0; i < cookieArray.length; i++) {
     let cookie = cookieArray[i].trim();
-
     if (cookie.indexOf(name) === 0) {
       return cookie.substring(name.length, cookie.length);
     }
   }
-
   return "";
 };
 
 // 페이지 로드 시 실행되는 함수
-
 window.onload = () => {
   const auth = document.querySelectorAll(".auth");
   const notauth = document.querySelectorAll(".notauth");
   const access = getCookie("my-app-auth");
   const refresh = getCookie("my-refresh-token");
-
   // access 쿠키가 존재하는 경우
   if (access !== "") {
     auth.forEach(element => {
