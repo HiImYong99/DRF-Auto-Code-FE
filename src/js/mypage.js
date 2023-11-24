@@ -8,8 +8,8 @@ const token = getCookie("my-app-auth");
 
 const lang_lst = [];
 const purpose_lst = [];
-function userrequest() {
-  fetch("http://127.0.0.1:8000/main/request/", {
+async function userrequest() {
+  await fetch("http://127.0.0.1:8000/main/request/", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
