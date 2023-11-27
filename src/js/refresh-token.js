@@ -15,10 +15,11 @@ const refresh_access = async () => {
     .catch(err => {
       console.log(err);
     });
-  location.reload();
 };
-
-setInterval(refresh_access, 1000 * 60 * 59);
+window.addEventListener("beforeunload", event => {
+  event.preventDefault();
+  refresh_access();
+});
 
 function isTokenExpired() {
   const token = getCookie("access_token");
