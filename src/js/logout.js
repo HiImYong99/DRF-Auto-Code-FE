@@ -1,11 +1,10 @@
+// 로그아웃 처리
+import { url } from "./url.js";
+import { deleteAllCookies, clearToken } from "./cookie.js";
 const $logout_btn = document.querySelector("#logout-btn");
 
-const deleteCookie = cookie_name => {
-  document.cookie = `${cookie_name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-};
-
 const api_logout = async () => {
-  await fetch("http://127.0.0.1:8000/accounts/logout/", {
+  await fetch(`${url}/accounts/logout/`, {
     method: "POST",
     headers: {},
     credentials: "include",
@@ -17,4 +16,6 @@ const api_logout = async () => {
   location.reload();
 };
 
+$logout_btn.addEventListener("click", clearToken);
+$logout_btn.addEventListener("click", deleteAllCookies);
 $logout_btn.addEventListener("click", api_logout);

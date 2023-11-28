@@ -1,3 +1,5 @@
+// 회원가입 처리
+import { url } from "./url.js";
 const signup_btn = document.querySelector("#signup-btn");
 
 const api_join = async e => {
@@ -19,7 +21,7 @@ const api_join = async e => {
   formData.append("password2", password2);
 
   // fetch를 이용해서 서버에 POST 요청을 보낸다.
-  await fetch("http://127.0.0.1:8000/accounts/register/", {
+  await fetch(`${url}/accounts/register/`, {
     method: "POST",
     headers: {},
     body: formData,

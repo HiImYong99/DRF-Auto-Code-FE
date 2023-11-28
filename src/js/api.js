@@ -1,8 +1,6 @@
 //서버와의 통신 js
+import { url } from "./url.js";
 
-// import { data } from "./data.js";
-
-let url = "http://127.0.0.1:8000/main/request/";
 const $output_text = document.querySelector("#ai-answer");
 export const $loading = document.querySelector("#loading");
 
@@ -11,20 +9,20 @@ function getCookie(name) {
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop().split(";").shift();
 }
-//사용자에게 입력받은 요청을 data에 넣음
 
+//사용자에게 입력받은 요청을 data에 넣음
 const data = {};
 export const sendQuestion = (lang, method, detail) => {
   data["language"] = lang;
   data["purpose"] = method;
   data["detail"] = detail;
-  console.log(data);
 };
 
-const token = getCookie("my-app-auth");
 // api 통신 만약 성공시 printAnswer 함수 인자값에 받아온 결과값 전달
+
+const token = getCookie("my-app-auth");
 export const apiPost = async () => {
-  await fetch(url, {
+  await fetch(`http://15.164.247.181:8000/gpt/request/`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -32,9 +30,14 @@ export const apiPost = async () => {
     },
     body: JSON.stringify(data),
   })
-    .then(res => res.json())
     .then(res => {
-      console.log(res.answer);
+      if (res.status === 200) {
+        return res.json();
+      } else {
+        alert("하루 최대 5건의 요청만 가능합니다.");
+      }
+    })
+    .then(res => {
       printAnswer(res.answer);
     })
     .catch(err => {

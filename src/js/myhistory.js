@@ -1,5 +1,6 @@
+// 내 기록 page 데이터 처리
+import { url } from "./url.js";
 import { getCookie } from "./cookie.js";
-// 요청 답변 기록js
 const $remove_btn = document.querySelector("#history-remove");
 const $question = document.querySelector("#question");
 const $result = document.querySelector("#result");
@@ -7,9 +8,8 @@ const id_lst = [];
 const data_lst = [];
 const answer_lst = [];
 const token = getCookie("my-app-auth");
-
 function userrequest() {
-  fetch("http://127.0.0.1:8000/main/request/", {
+  fetch(`${url}/gpt/response/`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ function write_history(detail) {
 // 버튼클릭 시 초기화
 function deleteData(index) {
   if (confirm("정말 해당 기록을 삭제하시겠습니까?")) {
-    fetch(`http://127.0.0.1:8000/main/delete/${id_lst[0][Number(index)]}/`, {
+    fetch(`${url}/gpt/delete/${id_lst[0][Number(index)]}/`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -101,9 +101,10 @@ function deleteData(index) {
   location.reload();
 }
 
-function deleteDataAll(index) {
+function deleteDataAll() {
+  const token = getCookie("my-app-auth");
   if (confirm("정말 해당 기록을 삭제하시겠습니까?")) {
-    fetch(`http://127.0.0.1:8000/main/delete/all/`, {
+    fetch(`${url}/gpt/delete/all/`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -138,6 +139,6 @@ $remove_btn.addEventListener("click", deleteDataAll);
 window.onload = () => {
   if (!token) {
     alert("로그인이 필요합니다!");
-    window.location.href = "./login.html"; // 로그인 페이지로 리디렉션
+    window.location.href = "./login.html"; 
   }
 };

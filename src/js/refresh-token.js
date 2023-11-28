@@ -1,10 +1,18 @@
+// 토큰 재발급 및 유효성 검사
 import { url } from "./url.js";
-const refresh_token = getCookie("my-refresh-token");
+import {
+  saveCookie,
+  saveToken,
+  getToken,
+  deleteAllCookies,
+  clearToken,
+} from "./cookie.js";
 
 const formData = new FormData();
 formData.append("refresh", refresh_token);
 
 const refresh_access = async () => {
+  const refresh_token = getCookie("my-refresh-token");
   await fetch(`${url}/accounts/token/refresh/`, {
     method: "POST",
     headers: {},
@@ -12,6 +20,10 @@ const refresh_access = async () => {
     body: formData,
   })
     .then(res => res.json())
+    .then(data => {
+      saveToken("my-app-auth", data.access);
+      saveCookie("my-app-auth", getToken("my-app-auth"), 1);
+    })
     .catch(err => {
       console.log(err);
     });
@@ -22,29 +34,33 @@ window.addEventListener("beforeunload", event => {
 });
 
 function isTokenExpired() {
-  const token = getCookie("access_token");
-  if (!token) {
-    return true;
-  }
-
+  const token = getCookie("my-app-auth");
   const decodedToken = decodeJwtToken(token);
-  if (!decodedToken.exp) {
-    return true;
-  }
-
   const currentTime = Math.floor(Date.now() / 1000);
+
   return decodedToken.exp < currentTime;
 }
 
 function logout() {
+  console.log("토큰체크");
   if (isTokenExpired()) {
+    deleteAllCookies();
+    clearToken();
     alert("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
-    deleteCookie("access_token");
+    location.reload();
+    api_logout();
+    const api_logout = async () => {
+      await fetch(`${url}/accounts/logout/`, {
+        method: "POST",
+        headers: {},
+        credentials: "include",
+      })
+        .then(res => res.json())
+        .catch(err => {
+          console.log(err);
+        });
+    };
   }
-}
-
-function deleteCookie(name) {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }
 
 function decodeJwtToken(token) {
@@ -65,4 +81,4 @@ function getCookie(name) {
 }
 
 // 1분마다 토큰 유효검사
-setInterval(logout, 1000 * 60);
+setInterval(logout, 1000 * 61);

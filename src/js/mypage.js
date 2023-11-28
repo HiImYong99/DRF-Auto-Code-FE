@@ -1,4 +1,5 @@
-// 내 통계를 위한 js
+// 내 통계 데이터 처리
+import { url } from "./url.js";
 import { getCookie } from "./cookie.js";
 const $use_count = document.querySelector("#use-count");
 const $lang_count = document.querySelector("#lang-count");
@@ -9,7 +10,7 @@ const token = getCookie("my-app-auth");
 const lang_lst = [];
 const purpose_lst = [];
 async function userrequest() {
-  await fetch("http://127.0.0.1:8000/main/request/", {
+  await fetch(`${url}/gpt/response/`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,

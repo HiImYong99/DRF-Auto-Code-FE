@@ -1,3 +1,5 @@
+// 요청처리
+
 import { sendQuestion, apiPost, $loading } from "./api.js";
 
 const $btn = document.querySelector("#submit-btn");
