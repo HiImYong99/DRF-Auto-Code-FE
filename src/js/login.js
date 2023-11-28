@@ -20,7 +20,12 @@ const api_login = async e => {
     credentials: "include",
     body: formData,
   })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status === 400) {
+        throw new Error("Invalid username or password");
+      }
+      return res.json();
+    })
     .then(data => {
       if (data.non_field_errors) {
       } else {

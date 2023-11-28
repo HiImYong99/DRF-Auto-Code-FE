@@ -26,6 +26,12 @@ const api_join = async e => {
     headers: {},
     body: formData,
   })
+    .then(res => {
+      if (res.status === 400) {
+        throw new Error("Invalid username or password");
+      }
+      return res.json();
+    })
     .then(data => {
       if (data.email) {
         alert(data.email[0]);
@@ -35,6 +41,7 @@ const api_join = async e => {
       }
     })
     .catch(err => {
+      alert("유효하지 않은 이메일이거나 비밀번호 입니다.");
       console.log(err);
     });
 };
