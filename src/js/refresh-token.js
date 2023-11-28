@@ -9,10 +9,10 @@ import {
 } from "./cookie.js";
 
 const formData = new FormData();
-formData.append("refresh", refresh_token);
 
 const refresh_access = async () => {
   const refresh_token = getCookie("my-refresh-token");
+  formData.append("refresh", refresh_token);
   await fetch(`${url}/accounts/token/refresh/`, {
     method: "POST",
     headers: {},
